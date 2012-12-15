@@ -100,7 +100,7 @@
 		
 			map = new L.Map('map', {
 				center: new L.LatLng(34.68, 135.18), 
-				zoom: 15,
+				zoom: 16,
 				layers: [mapquest],
 				zoomControl: true
 			});
@@ -130,11 +130,11 @@
 			});
 			
 			// Load user points
-			getPoints();
+			loadPoints();
 		});
 
 		// GET points
-		function getPoints() {
+		function loadPoints() {
 
 			var params = '?service=WFS&version=1.1.0&request=GetFeature&typeName=grp:points&maxFeatures=50&outputFormat=json';
 
@@ -146,24 +146,35 @@
 					markers.splice(i, 1);
 				}
 			
-				console.log(json);
-			});
+				// Add markers
+				for(i=0;i<json.features.length;i++) {
+				
+					var ftr = json.features[i];
 
+					var options = {
+						pid: ftr.properties.pid,
+						type: ftr.properties['class'],
+						icon: eval(ftr.properties['class'] + 'Icon'),
+						draggable: true
+					};
+					console.log(options);
+					
+					var point = L.marker([ftr.geometry.coordinates[0],ftr.geometry.coordinates[1]],options).addTo(map);
+					point.bindPopup(
+						'<a onClick="deletePoint(\'' + point.options.pid 
+							+ '\');" href="#">Remove Me!</a>',
+						{
+							closeButton: false
+						}
+					);
 
-			/*var point = L.marker(position,options).addTo(map);
-			point.bindPopup(
-				'<a onClick="deletePoint(\'' + point.options.pid 
-					+ '\');" href="#">Remove Me!</a>',
-				{
-					closeButton: false
-				}
-			);
-
-			point.on('dragend', function(evt){
-				updatePoint(point);
-			});
+					point.on('dragend', function(evt){
+						updatePoint(point);
+					});
 			
-			markers.push(point);*/
+					markers.push(point);
+				}
+			});
 		}
 		
 		// INSERT point
