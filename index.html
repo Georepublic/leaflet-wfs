@@ -157,7 +157,6 @@
 						icon: eval(ftr.properties['class'] + 'Icon'),
 						draggable: true
 					};
-					console.log(options);
 					
 					var point = L.marker([ftr.geometry.coordinates[0],ftr.geometry.coordinates[1]],options).addTo(map);
 					point.bindPopup(
@@ -228,6 +227,7 @@
 				data: postData,
 				//TODO: Error handling
 				success: function(xml) {	
+					console.log(xml);
 					//TODO: User feedback
 				}
 			});
