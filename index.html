@@ -139,7 +139,8 @@
 			var maxFeatures = 50;
 			var params = '?service=WFS&version=1.1.0&request=GetFeature&typeName=grp:points'
 							+ '&outputFormat=json&sortBy=created+D&maxFeatures=' + maxFeatures
-							+ '&ip=' + user.ip;
+							+ '&filter=<PropertyIsEqualTo><PropertyName>ip</PropertyName><Literal>' 
+							+ user.ip + '</Literal></PropertyIsEqualTo>';
 
 			$.get(gs.ows + params, function(json){
 
