@@ -1,4 +1,4 @@
 leaflet-wfs
 ===========
 
-Put together LEaflet with WFS
+Leaflet map with WFS
