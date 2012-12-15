@@ -96,6 +96,9 @@
 			// Assign points to users
 			$.get('http://api.hostip.info/get_json.php',function(json){
 				user = json;
+
+				// Load user points
+				loadPoints();
 			});
 		
 			map = new L.Map('map', {
@@ -127,10 +130,7 @@
 						options
 					);
 				}
-			});
-			
-			// Load user points
-			loadPoints();
+			});			
 		});
 
 		// GET points
