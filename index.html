@@ -59,8 +59,9 @@
 	<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 	
 	<script>
-		var wfs = {
-			url: 'http://lab.georepublic.info/geoserver/grp/wfs'
+		var gs = {
+			wms: 'http://lab.georepublic.info/geoserver/grp/wfs',
+			ows: 'http://lab.georepublic.info/geoserver/grp/ows'
 		};
 		
 		// Configure map
@@ -127,8 +128,43 @@
 					);
 				}
 			});
-		
+			
+			// Load user points
+			getPoints();
 		});
+
+		// GET points
+		function getPoints() {
+
+			var params = '?service=WFS&version=1.1.0&request=GetFeature&typeName=grp:points&maxFeatures=50&outputFormat=json';
+
+			$.get(gs.ows + params, function(json){
+
+				// Remove all markers
+				for(i=0;i<markers.length;i++) {
+					map.removeLayer(markers[i]);
+					markers.splice(i, 1);
+				}
+			
+				console.log(json);
+			});
+
+
+			/*var point = L.marker(position,options).addTo(map);
+			point.bindPopup(
+				'<a onClick="deletePoint(\'' + point.options.pid 
+					+ '\');" href="#">Remove Me!</a>',
+				{
+					closeButton: false
+				}
+			);
+
+			point.on('dragend', function(evt){
+				updatePoint(point);
+			});
+			
+			markers.push(point);*/
+		}
 		
 		// INSERT point
 		function insertPoint(position,options) {
@@ -175,7 +211,7 @@
 			
 			$.ajax({
 				type: "POST",
-				url: wfs.url,
+				url: gs.wfs,
 				dataType: "xml",
 				contentType: "text/xml",
 				data: postData,
@@ -220,7 +256,7 @@
 			
 			$.ajax({
 				type: "POST",
-				url: wfs.url,
+				url: gs.wfs,
 				dataType: "xml",
 				contentType: "text/xml",
 				data: postData,
@@ -263,7 +299,7 @@
 			  
 			$.ajax({
 				type: "POST",
-				url: wfs.url,
+				url: gs.wfs,
 				dataType: "xml",
 				contentType: "text/xml",
 				data: postData,
