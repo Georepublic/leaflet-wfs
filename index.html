@@ -147,8 +147,8 @@
 				// Remove all markers
 				for(i=0;i<markers.length;i++) {
 					map.removeLayer(markers[i]);
-					markers.splice(i, 1);
 				}
+				markers = [];
 			
 				// Add markers
 				for(i=0;i<json.features.length;i++) {
